@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Eventos de Mujeres por Año</title>
+    <!-- Incluir Chart.js desde un CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>Gráfico de Eventos de Mujeres por Año</h1>
+        <canvas id="myChart" width="800" height="400"> </canvas>
+    </div>
+    <script>
+        // Cargar los datos desde el archivo JSON
+        fetch('output.json')
+          .then(response => response.json())
+          .then(data => {
+            // Filtrar eventos que contienen "women" en event_title y años menores a cierto valor (por ejemplo, 2022)
+            const filteredData = data.filter(item => item.event_title.toLowerCase().includes('women') && item.year < 2022);
+
+            // Contar eventos por año
+            const eventsByYear = {};
+            filteredData.forEach(item => {
+              if (!eventsByYear[item.year]) {
+                eventsByYear[item.year] = 0;
+              }
+              eventsByYear[item.year]++;
+            });
+
+            // Preparar datos para Chart.js
+            const labels = Object.keys(eventsByYear);
+            const dataCounts = labels.map(year => eventsByYear[year]);
+
+            // Configuración del gráfico usando Chart.js
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: 'Eventos de Mujeres por Año',
+                  data: dataCounts,
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor: 'rgba(255, 99, 132, 1)',
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    stepSize: 1
+                  }
+                }
+              }
+            });
+          })
+          .catch(error => {
+            console.error('Error al cargar o procesar los datos:', error);
+          });
+    </script>
+</body>
+</html>
