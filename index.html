@@ -1,65 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gráfico de Eventos de Mujeres por Año</title>
-    <!-- Incluir Chart.js desde un CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Mujeres en los Juegos Olímpicosz</title>
+  <link rel="icon" href="logo.png" sizes="32x32"/>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Roboto:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <div style="text-align: center;">
-        <h1>Gráfico de Eventos de Mujeres por Año</h1>
-        <canvas id="myChart" width="800" height="400"> </canvas>
-    </div>
-    <script>
-        // Cargar los datos desde el archivo JSON
-        fetch('output.json')
-          .then(response => response.json())
-          .then(data => {
-            // Filtrar eventos que contienen "women" en event_title y años menores a cierto valor (por ejemplo, 2022)
-            const filteredData = data.filter(item => item.event_title.toLowerCase().includes('women') && item.year < 2022);
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              "Un Salto de Tiempo: Mujeres en los Juegos Olímpicos"
+            </span>
+          </a>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class=" slider_section position-relative">
+      <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="slider_item-box layout_padding2">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="detail-box">
+                      <div>
+                        <h1>
+                         Participación <br>
+                          de las Mujeres  <br>
+                          en los Juegos Olimpicos<br>
+                          <span>
+                            Evolución.
+                          </span>
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <p>
+                      En el amanecer de los Juegos Olímpicos modernos, en 1896, las mujeres eran meras espectadoras, excluidas de la competencia atlética. Pero fue en París, en el año 1900, donde el destino de las mujeres en el deporte cambió para siempre. En la sombra de la majestuosa Torre Eiffel, atletas femeninas de todo el mundo hicieron historia al competir por primera vez en la mayor cita deportiva del planeta.
+                    </p>
+                    <p>
+                      Entre ellas, María González, una joven cubana de espíritu indomable, se alzó con la medalla de oro en la naciente disciplina del tiro al blanco. Su victoria no solo fue un triunfo personal, sino un faro de esperanza para millones de mujeres en todo el mundo, demostrando que los límites eran solo ilusiones por derribar.                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+  <div class="bg">
 
-            // Contar eventos por año
-            const eventsByYear = {};
-            filteredData.forEach(item => {
-              if (!eventsByYear[item.year]) {
-                eventsByYear[item.year] = 0;
-              }
-              eventsByYear[item.year]++;
-            });
+    <!-- about section -->
+    <section class="about_section layout_padding">
+      <div class="container">
+        <div class="custom_heading-container">
+          <h3 class=" ">
+          Participación en Eventos
+          </h3>
+        </div>
+        <p class="layout_padding2-top">
+          Desde entonces, cada edición de los Juegos Olímpicos ha sido testigo de un ascenso imparable de las mujeres en el deporte. A través de décadas de lucha por la igualdad y el reconocimiento, desde el Movimiento Sufragista hasta las protestas por los derechos civiles, las atletas han desafiado estereotipos y barreras con tenacidad y gracia.
+          París 2024 se alza como un hito en esta historia de progreso. Con gráficos que muestran un aumento vertiginoso en la participación femenina en una amplia gama de disciplinas, los Juegos prometen ser una celebración de la igualdad de género en su máxima expresión. Más que una competencia deportiva, será un símbolo vibrante del poder transformador del deporte para promover la inclusión y la justicia social.
+          
+        </p>
+        <div class="container">
+          <canvas id="myChart1" ></canvas>
+        </div>
+        <div class="container">
+          <p>
+     
+          </p>
+        </div>
+    </section>
+    <section class="about_section layout_padding">
+      <div class="container">
+        <div class="custom_heading-container">
+          <h3 class=" ">
+          Cantidad de medallas 
+          </h3>
+        </div>
+        <p class="layout_padding2-top">
+          En cada saltador, corredora y competidora, vemos reflejado un legado de resistencia y logro que trasciende el deporte. La historia de María González y de innumerables mujeres atletas que la siguieron inspiran a generaciones a perseguir sus sueños sin importar las adversidades. El futuro del deporte olímpico brilla con la promesa de un mundo donde todos, sin importar el género, puedan brillar en la arena mundial.Se puede notar el gran ascenso de la cantidad de medallas ganadas por las mujeres.
+        </p>
+      </div>
+      <div class="container">
+        <canvas id="myChart2"></canvas>
+      </div>
+    </section>
 
-            // Preparar datos para Chart.js
-            const labels = Object.keys(eventsByYear);
-            const dataCounts = labels.map(year => eventsByYear[year]);
 
-            // Configuración del gráfico usando Chart.js
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const myChart = new Chart(ctx, {
-              type: 'bar',
-              data: {
-                labels: labels,
-                datasets: [{
-                  label: 'Eventos de Mujeres por Año',
-                  data: dataCounts,
-                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                  borderColor: 'rgba(255, 99, 132, 1)',
-                  borderWidth: 1
-                }]
-              },
-              options: {
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    stepSize: 1
-                  }
-                }
-              }
-            });
-          })
-          .catch(error => {
-            console.error('Error al cargar o procesar los datos:', error);
-          });
-    </script>
+    <!-- end about section -->
+
+   
+    <section class="work_section layout_padding">
+      <div class="container">
+        <div class="custom_heading-container">
+          <h3 class=" ">
+          Conclusiones
+          </h3>
+          <p>
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- end work section -->
+
+
+   
+    <!-- footer section -->
+
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
 </body>
 </html>
