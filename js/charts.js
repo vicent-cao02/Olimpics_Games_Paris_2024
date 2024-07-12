@@ -199,3 +199,126 @@ loadJSON(function(err, data) {
    .catch(error => {
      console.error('Error al cargar o procesar los datos:', error);
    });
+  
+ // Función para cargar datos desde un archivo JSON
+async function cargarDatos() {
+    const response = await fetch('./data/output.json');  // Ruta de tu archivo JSON
+    const data = await response.json();
+    return data;
+  }
+  
+//   // Función para crear el gráfico de líneas multilinea
+//   async function crearGraficoLineasMultilinea() {
+//     // Cargar los datos
+//     const data = await cargarDatos();
+  
+//     // Filtrar los eventos de mujeres y contar las medallas por país y año
+//     const womenEvents = data.filter(event => event.event_title && event.event_title.toLowerCase().includes("women"));
+  
+//     // Obtiene la lista de países únicos y años únicos
+//     const countries = [...new Set(womenEvents.map(event => event.country_name))];
+//     const years = [...new Set(womenEvents.map(event => event.year))];
+  
+//     // Crear estructura de datos para almacenar medallas por país y por año
+//     const medalsByCountryAndYear = {};
+//     countries.forEach(country => {
+//       medalsByCountryAndYear[country] = {};
+//       years.forEach(year => {
+//         medalsByCountryAndYear[country][year] = { gold: 0, silver: 0, bronze: 0 };
+//       });
+//     });
+  
+//     // Contar las medallas por país y por año
+//     womenEvents.forEach(event => {
+//       medalsByCountryAndYear[event.country_name][event.year][event.medal_type.toLowerCase()]++;
+//     });
+  
+//     // Prepara los datasets para el gráfico de líneas
+//     const datasets = [];
+//     countries.forEach(country => {
+//       const dataPoints = years.map(year => {
+//         return {
+//           x: year,
+//           y: [
+//             medalsByCountryAndYear[country][year].gold,
+//             medalsByCountryAndYear[country][year].silver,
+//             medalsByCountryAndYear[country][year].bronze
+//           ]
+//         };
+//       });
+//       datasets.push({
+//         label: country,
+//         data: dataPoints,
+//         borderColor: getRandomColor(),
+//         backgroundColor: 'transparent',
+//         pointRadius: 5,
+//         pointHoverRadius: 10,
+//       });
+//     });
+  
+//     const config = {
+//       type: "line",
+//       data: {
+//         labels: years,
+//         datasets: datasets,
+//       },
+//       options: {
+//         plugins: {
+//           legend: {
+//             labels: {
+//               usePointStyle: true,
+//             },
+//           },
+//           title: {
+//             display: true,
+//             text: "Medallas ganadas por las mujeres por país y año",
+//           },
+//           tooltip: {
+//             mode: "index",
+//             intersect: false,
+//           },
+//           hover: {
+//             mode: "nearest",
+//             intersect: true,
+//           },
+//         },
+//         scales: {
+//           x: {
+//             type: 'linear',
+//             title: {
+//               display: true,
+//               text: 'Año',
+//             },
+//           },
+//           y: {
+//             beginAtZero: true,
+//             title: {
+//               display: true,
+//               text: "Medallas",
+//             },
+//           },
+//         },
+//         interaction: {
+//           mode: "index",
+//           intersect: false,
+//         },
+//       },
+//     };
+  
+//     // Crea el gráfico
+//     const ctx = document.getElementById("myChart").getContext("2d");
+//     const myChart = new Chart(ctx, config);
+  
+//     function getRandomColor() {
+//       const letters = "0123456789ABCDEF";
+//       let color = "#";
+//       for (let i = 0; i < 6; i++) {
+//         color += letters[Math.floor(Math.random() * 16)];
+//       }
+//       return color;
+//     }
+//   }
+  
+//   // Llama a la función para crear el gráfico al cargar la página
+//   document.addEventListener('DOMContentLoaded', crearGraficoLineasMultilinea);
+  
