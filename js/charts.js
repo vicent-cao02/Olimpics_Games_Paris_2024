@@ -199,126 +199,126 @@ loadJSON(function(err, data) {
    .catch(error => {
      console.error('Error al cargar o procesar los datos:', error);
    });
-  
- // Función para cargar datos desde un archivo JSON
-async function cargarDatos() {
-    const response = await fetch('./data/output.json');  // Ruta de tu archivo JSON
-    const data = await response.json();
-    return data;
-  }
-  
-//   // Función para crear el gráfico de líneas multilinea
-//   async function crearGraficoLineasMultilinea() {
-//     // Cargar los datos
-//     const data = await cargarDatos();
-  
-//     // Filtrar los eventos de mujeres y contar las medallas por país y año
-//     const womenEvents = data.filter(event => event.event_title && event.event_title.toLowerCase().includes("women"));
-  
-//     // Obtiene la lista de países únicos y años únicos
-//     const countries = [...new Set(womenEvents.map(event => event.country_name))];
-//     const years = [...new Set(womenEvents.map(event => event.year))];
-  
-//     // Crear estructura de datos para almacenar medallas por país y por año
-//     const medalsByCountryAndYear = {};
-//     countries.forEach(country => {
-//       medalsByCountryAndYear[country] = {};
-//       years.forEach(year => {
-//         medalsByCountryAndYear[country][year] = { gold: 0, silver: 0, bronze: 0 };
-//       });
-//     });
-  
-//     // Contar las medallas por país y por año
-//     womenEvents.forEach(event => {
-//       medalsByCountryAndYear[event.country_name][event.year][event.medal_type.toLowerCase()]++;
-//     });
-  
-//     // Prepara los datasets para el gráfico de líneas
-//     const datasets = [];
-//     countries.forEach(country => {
-//       const dataPoints = years.map(year => {
-//         return {
-//           x: year,
-//           y: [
-//             medalsByCountryAndYear[country][year].gold,
-//             medalsByCountryAndYear[country][year].silver,
-//             medalsByCountryAndYear[country][year].bronze
-//           ]
-//         };
-//       });
-//       datasets.push({
-//         label: country,
-//         data: dataPoints,
-//         borderColor: getRandomColor(),
-//         backgroundColor: 'transparent',
-//         pointRadius: 5,
-//         pointHoverRadius: 10,
-//       });
-//     });
-  
-//     const config = {
-//       type: "line",
-//       data: {
-//         labels: years,
-//         datasets: datasets,
-//       },
-//       options: {
-//         plugins: {
-//           legend: {
-//             labels: {
-//               usePointStyle: true,
-//             },
-//           },
-//           title: {
-//             display: true,
-//             text: "Medallas ganadas por las mujeres por país y año",
-//           },
-//           tooltip: {
-//             mode: "index",
-//             intersect: false,
-//           },
-//           hover: {
-//             mode: "nearest",
-//             intersect: true,
-//           },
-//         },
-//         scales: {
-//           x: {
-//             type: 'linear',
-//             title: {
-//               display: true,
-//               text: 'Año',
-//             },
-//           },
-//           y: {
-//             beginAtZero: true,
-//             title: {
-//               display: true,
-//               text: "Medallas",
-//             },
-//           },
-//         },
-//         interaction: {
-//           mode: "index",
-//           intersect: false,
-//         },
-//       },
-//     };
-  
-//     // Crea el gráfico
-//     const ctx = document.getElementById("myChart").getContext("2d");
-//     const myChart = new Chart(ctx, config);
-  
-//     function getRandomColor() {
-//       const letters = "0123456789ABCDEF";
-//       let color = "#";
-//       for (let i = 0; i < 6; i++) {
-//         color += letters[Math.floor(Math.random() * 16)];
-//       }
-//       return color;
-//     }
-//   }
-  
-//   // Llama a la función para crear el gráfico al cargar la página
-//   document.addEventListener('DOMContentLoaded', crearGraficoLineasMultilinea);
-  
+   document.addEventListener('DOMContentLoaded', function() {
+    let data = []; // Variable para almacenar los datos del archivo JSON
+    let myChart;   // Variable para almacenar la instancia de Chart.js
+
+    // Función para obtener los países que aparecen en el JSON en el año 2020
+    function getCountriesInYear(data, year) {
+        const countries = new Set(); // Utilizamos un Set para asegurar valores únicos
+
+        // Iterar sobre los datos y agregar los países que participaron en el año especificado
+        data.forEach(entry => {
+            if (entry.year === year) {
+                countries.add(entry.country_name);
+            }
+        });
+
+        return Array.from(countries); // Convertir el Set a un array de países
+    }
+
+    // Función para actualizar el selector de países
+    function updateCountrySelector(countries) {
+        const countrySelector = document.getElementById('countrySelector');
+
+        // Limpiar opciones existentes
+        countrySelector.innerHTML = '';
+
+        // Crear y añadir nuevas opciones al selector
+        countries.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            countrySelector.appendChild(option);
+        });
+    }
+
+    // Función para contar medallas por género
+    function countMedalsByGender(data, selectedCountry) {
+        let maleCount = 0;
+        let femaleCount = 0;
+
+        data.forEach(entry => {
+            if (entry.country_name === selectedCountry && entry.participant_type === "Athlete") {
+                const eventTitle = entry.event_title.toLowerCase();
+                const medalType = entry.medal_type;
+
+                if (eventTitle.includes('men') && (medalType === 'GOLD' || medalType === 'SILVER' || medalType === 'BRONZE')) {
+                    maleCount++;
+                } if (eventTitle.includes('women') && (medalType === 'GOLD' || medalType === 'SILVER' || medalType === 'BRONZE')) {
+                    femaleCount++;
+                }
+            }
+        });
+
+        return { male: maleCount, female: femaleCount };
+    }
+
+    // Función para actualizar el gráfico según el país seleccionado
+    function updateChart(selectedCountry) {
+        // Contar las medallas para hombres y mujeres
+        const { male, female } = countMedalsByGender(data, selectedCountry);
+
+        // Actualizar el gráfico usando Chart.js
+        if (myChart) {
+            myChart.destroy(); // Destruir el gráfico anterior si existe
+        }
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Medallas Hombres', 'Medallas Mujeres'],
+                datasets: [{
+                    label: selectedCountry,
+                    data: [male, female],
+                    backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)'],
+                    borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Cargar los datos desde el archivo JSON
+    fetch('./data/output.json')
+        .then(response => response.json())
+        .then(jsonData => {
+            data = jsonData; // Almacenar los datos en la variable data
+
+            // Obtener los países únicos que participaron en Tokio 2020
+            const countriesIn2020 = getCountriesInYear(data, 2020);
+
+            // Actualizar el selector de países
+            updateCountrySelector(countriesIn2020);
+
+            // Manejar el cambio en el selector de países
+            const countrySelector = document.getElementById('countrySelector');
+            countrySelector.addEventListener('change', function() {
+                const selectedCountry = this.value;
+                updateChart(selectedCountry);
+            });
+
+            // Mostrar el gráfico inicialmente con el primer país
+            if (countriesIn2020.length > 0) {
+                const initialCountry = countriesIn2020[0]; // Seleccionar el primer país por defecto
+                updateChart(initialCountry);
+            } else {
+                console.error('No hay países disponibles para mostrar.');
+            }
+
+        })
+        .catch(error => {
+            console.error('Error al cargar o procesar los datos:', error);
+        });
+});
