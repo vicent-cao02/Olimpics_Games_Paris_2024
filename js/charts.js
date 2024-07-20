@@ -264,7 +264,7 @@ loadJSON(function(err, data) {
             myChart.destroy(); // Destruir el gráfico anterior si existe
         }
 
-        const ctx = document.getElementById('myChart').getContext('2d');
+        const ctx = document.getElementById('myChart3').getContext('2d');
         myChart = new Chart(ctx, {
             type: 'bar',
             data: {
