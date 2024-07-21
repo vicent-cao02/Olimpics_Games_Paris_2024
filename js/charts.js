@@ -239,7 +239,7 @@ loadJSON(function(err, data) {
         let femaleCount = 0;
 
         data.forEach(entry => {
-            if (entry.country_name === selectedCountry && entry.participant_type === "Athlete") {
+            if (entry.year === 2020 && entry.country_name === selectedCountry && entry.participant_type === "Athlete") {
                 const eventTitle = entry.event_title.toLowerCase();
                 const medalType = entry.medal_type;
 
